@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Permissions{% endblock %}
+
+{% block content %}
+<h1>Manage Permissions</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}  <!-- Include CSRF token -->
+    
+    <label for="role">Role:</label>
+    <select id="role" name="role" required>
+        <option value="">Select Role</option>
+        {% for role in roles %}
+            <option value="{{ role.role }}">{{ role.role }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="manage_users">Manage Users:</label>
+    <input type="checkbox" id="manage_users" name="manage_users">
+
+   
+
+
+    <input type="submit" value="Save Permissions">
+</form>
+
+<h2>Existing Permissions</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Role</th>
+            <th>Manage Users</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for permission in permissions %}
+        <tr>
+            <td>{{ permission.role }}</td>
+            <td>{{ permission.manage_users }}</td>
+            <td>
+                <a href="{{ url_for('users.edit_permission', permission_id=permission.permission_id) }}">Edit</a>
+                <a href="{{ url_for('users.delete_permission', permission_id=permission.permission_id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

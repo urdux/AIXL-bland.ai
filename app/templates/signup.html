@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    <h2>Sign Up</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <label for="email">{{ form.email.label }}</label>
+        {{ form.email(size=32, id="email") }}<br>
+        
+        <label for="password">{{ form.password.label }}</label>
+        {{ form.password(size=32, id="password") }}<br>
+        
+        <label for="business_name">{{ form.business_name.label }}</label>
+        {{ form.business_name(size=32, id="business_name") }}<br>
+        
+        <label for="address">{{ form.address.label }}</label>
+        {{ form.address(size=32, id="address") }}<br>
+        
+        <label for="city">{{ form.city.label }}</label>
+        {{ form.city(size=32, id="city") }}<br>
+        
+        <label for="phone_number">{{ form.phone_number.label }}</label>
+        {{ form.phone_number(size=32, id="phone_number") }}<br>
+        
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+{% endblock %}

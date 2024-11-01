@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Add User{% endblock %}
+
+{% block content %}
+    <h2>Add User</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.email.label }} {{ form.email(size=32) }}<br>
+        
+        {{ form.password.label }} 
+        {{ form.password(size=32, id='password', type='password') }} <!-- Default type is password -->
+        <span onclick="togglePassword()" style="cursor:pointer;">
+            <i id="password-toggle" class="fa fa-eye"></i> <!-- FontAwesome eye icon -->
+        </span>
+        <button type="button" onclick="generatePassword()">Generate Password</button><br>
+        
+        {{ form.role.label }} {{ form.role() }}<br>
+        {{ form.business_name.label }} {{ form.business_name(size=32) }}<br>
+        {{ form.address.label }} {{ form.address(size=32) }}<br>
+        {{ form.city.label }} {{ form.city(size=32) }}<br>
+        {{ form.phone_number.label }} {{ form.phone_number(size=32) }}<br>
+        {{ form.submit() }}
+    </form>
+
+    <script>
+        function generatePassword() {
+            const password = Math.random().toString(36).slice(-8); // Generate a random password
+            document.getElementById('password').value = password; // Set the password field value
+        }
+
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const passwordToggleIcon = document.getElementById('password-toggle');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text'; // Show password
+                passwordToggleIcon.className = 'fa fa-eye-slash'; // Change icon to eye slash
+            } else {
+                passwordField.type = 'password'; // Hide password
+                passwordToggleIcon.className = 'fa fa-eye'; // Change icon to eye
+            }
+        }
+    </script>
+
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}

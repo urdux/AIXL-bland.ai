@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+    <h2>User Management</h2>
+    <a href="{{ url_for('users.add_user') }}">Add New User</a>
+    <a href="{{ url_for('users.manage_permissions') }}">Manage Permissions</a>  <!-- Link to manage permissions -->
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Business Name</th>
+                <th>Status</th>  <!-- New column for user status -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.business_name }}</td>
+                    <td>{{ 'Active' if user.is_active else 'Inactive' }}</td>  <!-- Display user status -->
+                    <td>
+                        <a href="{{ url_for('users.edit_user', user_id=user.user_id) }}">Edit</a>
+                        <a href="{{ url_for('users.delete_user', user_id=user.user_id) }}">Delete</a>
+
+                        {% if user.is_active %}
+                            <form action="{{ url_for('users.deactivate_user', user_id=user.user_id) }}" method="POST" style="display:inline;">
+                                {{ form.hidden_tag() }}  <!-- Include CSRF token -->
+                                <button type="submit">Deactivate</button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('users.activate_user', user_id=user.user_id) }}" method="POST" style="display:inline;">
+                                {{ form.hidden_tag() }}  <!-- Include CSRF token -->
+                                <button type="submit">Activate</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

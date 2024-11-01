@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit Permission for {{ permission.role }}</h1>
+
+<form method="POST">
+    <label for="role">Role:</label>
+    <input type="text" id="role" name="role" value="{{ permission.role }}" required>
+
+    <label for="manage_users">Manage Users:</label>
+    <input type="checkbox" id="manage_users" name="manage_users" {% if permission.manage_users %}checked{% endif %}>
+
+    <input type="submit" value="Update Permission">
+</form>
+
+<a href="{{ url_for('users.manage_permissions') }}">Back to Manage Permissions</a>
+{% endblock %}

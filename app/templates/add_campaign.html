@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Campaign{% endblock %}
+
+{% block content %}
+<h2>Add New Campaign</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <label for="title">Title:</label>
+    {{ form.title(size=32) }}<br>
+    <label for="description">Description:</label>
+    {{ form.description(size=200) }}<br>
+    <label for="assigned_phone_numbers">Assigned Phone Numbers (JSON format):</label>
+    {{ form.assigned_phone_numbers(size=200) }}<br>
+    <label for="custom_faq">Custom FAQ:</label>
+    {{ form.custom_faq() }}<br>
+    <label for="knowledge_base">Knowledge Base:</label>
+    {{ form.knowledge_base(size=200) }}<br>
+    <label for="data_source_type">Data Source Type:</label>
+    {{ form.data_source_type() }}<br>
+    <label for="data_source_details">Data Source Details:</label>
+    {{ form.data_source_details(size=200) }}<br>
+    <input type="submit" value="Add Campaign">
+</form>
+{% endblock %}
