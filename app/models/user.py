@@ -17,8 +17,11 @@ class User(db.Model):
     last_login = db.Column(db.DateTime, nullable=True)
     is_active = db.Column(db.Boolean, default=True)
 
+    # Relationships
     permissions = db.relationship('UserPermission', back_populates='user')
-    campaigns = db.relationship('Campaign', back_populates='creator')
+    campaigns = db.relationship('Campaign', back_populates='user')
+    subscriptions = db.relationship('Subscription', back_populates='user', cascade='all, delete-orphan')
+    wallet = db.relationship('Wallet', back_populates='user', uselist=False)
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -37,6 +40,7 @@ class User(db.Model):
 
     def get_id(self):
         return str(self.user_id)
+
 
 class Permission(db.Model):
     __tablename__ = 'permissions'

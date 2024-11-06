@@ -3,11 +3,14 @@ from app.config import Config
 from app.database import db, create_database, init_app
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
-from .routes.campaign import campaign_bp
+
 # Import blueprints
 from app.routes.auth import auth_bp
 from app.routes.users import users_bp
-from app.models.user import User  # Import User model for user_loader
+from app.models.user import User  
+from .routes.campaign import campaign_bp
+from app.routes.subscription import subscriptions_bp
+
 
 csrf = CSRFProtect()
 login_manager = LoginManager()
@@ -27,6 +30,8 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(users_bp, url_prefix='/users')
     app.register_blueprint(campaign_bp, url_prefix='/campaigns')
+    app.register_blueprint(subscriptions_bp, url_prefix='/subscriptions')
+    
 
     return app
 

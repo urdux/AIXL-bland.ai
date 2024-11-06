@@ -1,0 +1,24 @@
+<!-- templates/recharge_wallet.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Recharge Wallet</h2>
+
+<form method="POST" action="{{ url_for('subscriptions.recharge') }}">
+    {{ form.hidden_tag() }}  <!-- CSRF token -->
+    
+    <div class="form-group">
+        {{ form.amount.label }}
+        {{ form.amount(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% if message %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endif %}
+
+{% endblock %}

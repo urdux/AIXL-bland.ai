@@ -1,26 +1,29 @@
-<!-- templates/campaigns/edit_campaign.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Campaign</title>
+    <title>Create Campaign</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script>
         function toggleScheduledCalls() {
             const campaignType = document.getElementById('campaign_type').value;
             const scheduledCallsSection = document.getElementById('scheduled_calls_section');
             scheduledCallsSection.style.display = (campaignType === 'outbound') ? 'block' : 'none';
+            
+            // Clear any existing scheduled call fields if the campaign type is not outbound
+            if (campaignType !== 'outbound') {
+                const scheduledCallsForms = document.querySelectorAll('.scheduled-call-form');
+                scheduledCallsForms.forEach(form => {
+                    form.querySelector('input[type="date"]').value = '';
+                    form.querySelector('input[type="time"]').value = '';
+                });
+            }
         }
-
-        // Ensure to set the display on page load based on the current campaign type
-        window.onload = function() {
-            toggleScheduledCalls();
-        };
     </script>
 </head>
 <body>
-    <h1>Edit Campaign: {{ campaign.campaign_name }}</h1>
+    <h1>Create Campaign</h1>
     <form method="POST">
         {{ form.hidden_tag() }}  <!-- CSRF Token -->
 
@@ -43,24 +46,26 @@
         <label for="campaign_type">Campaign Type:</label>
         {{ form.campaign_type(onchange="toggleScheduledCalls()", required=True) }}
 
-        <div id="scheduled_calls_section" style="display: none;">
+        <div id="scheduled_calls_section" style="display:none;">
             <h2>Scheduled Calls</h2>
             {% for call_form in form.scheduled_calls %}
-                <h3>Scheduled Call</h3>
-                <label for="date_from">Date From:</label>
-                {{ call_form.date_from() }}
+                <div class="scheduled-call-form">
+                    <h3>Scheduled Call</h3>
+                    <label for="date_from">Date From:</label>
+                    {{ call_form.date_from() }}  <!-- Date input -->
 
-                <label for="time_from">Time From:</label>
-                {{ call_form.time_from() }}
+                    <label for="time_from">Time From:</label>
+                    {{ call_form.time_from() }}  <!-- Time input -->
 
-                <label for="date_to">Date To:</label>
-                {{ call_form.date_to() }}
+                    <label for="date_to">Date To:</label>
+                    {{ call_form.date_to() }}  <!-- Date input -->
 
-                <label for="time_to">Time To:</label>
-                {{ call_form.time_to() }}
+                    <label for="time_to">Time To:</label>
+                    {{ call_form.time_to() }}  <!-- Time input -->
 
-                <label for="status">Status:</label>
-                {{ call_form.status() }}
+                    <label for="status">Status:</label>
+                    {{ call_form.status() }}
+                </div>
             {% endfor %}
         </div>
 
@@ -85,9 +90,14 @@
 
             <label for="role">Role:</label>
             {{ agent_form.role() }}
+
+            <h3>Campaign Agent</h3>
+            <label for="phone_number">Phone Number:</label>
+            {{ form.campaign_agents[loop.index0].phone_number() }}  <!-- Phone number for CampaignAgent -->
         {% endfor %}
 
-        <button type="submit">Update Campaign</button>
+        <button type="submit">Create Campaign</button>
     </form>
+    <a href="{{ url_for('campaigns.manage_campaigns') }}">Back to Manage Campaigns</a>
 </body>
 </html>

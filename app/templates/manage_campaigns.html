@@ -1,33 +1,40 @@
-{% extends 'base.html' %}
-
-{% block title %}Manage Campaigns{% endblock %}
-
-{% block content %}
-<h2>Campaign Management</h2>
-<a href="{{ url_for('campaigns.add_campaign') }}">Add New Campaign</a>
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for campaign in campaigns %}
-        <tr>
-            <td>{{ campaign.name }}</td>
-            <td>{{ campaign.description }}</td>
-            <td>{{ campaign.status }}</td>
-            <td>
-                <a href="{{ url_for('campaigns.edit_campaign', campaign_id=campaign.campaign_id) }}">Edit</a>
-                <form action="{{ url_for('campaigns.delete_campaign', campaign_id=campaign.campaign_id) }}" method="POST" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Campaigns</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Manage Campaigns</h1>
+    <a href="{{ url_for('campaigns.create_campaign') }}">Add New Campaign</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Campaign Name</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in campaigns %}
+            <tr>
+                <td>{{ campaign.campaign_name }}</td>
+                <td>{{ campaign.user.business_name }}</td>  <!-- Change this to the appropriate attribute -->
+                <td>{{ campaign.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    <a href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.campaign_id) }}">View</a>
+                    <a href="{{ url_for('campaigns.edit_campaign', campaign_id=campaign.campaign_id) }}">Edit</a>
+                    <form action="{{ url_for('campaigns.delete_campaign', campaign_id=campaign.campaign_id) }}" method="POST" style="display:inline;">
+                        {{ form.hidden_tag() }}  <!-- CSRF Token -->
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

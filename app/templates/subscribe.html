@@ -1,0 +1,31 @@
+<!-- templates/subscribe.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Subscribe to a Plan</h2>
+
+<p>Current Wallet Balance: ${{ wallet.balance }}</p>
+
+<form method="POST" action="{{ url_for('subscriptions.subscribe') }}">
+    {{ form.hidden_tag() }}  <!-- CSRF token -->
+    
+    <div class="form-group">
+        {{ form.plan_name.label }}
+        {{ form.plan_name(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.cost.label }}
+        {{ form.cost(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+{% endif %}
+
+{% endblock %}

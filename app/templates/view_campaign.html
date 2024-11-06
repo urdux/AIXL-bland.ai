@@ -1,0 +1,51 @@
+<!-- templates/campaigns/view_campaign.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Campaign</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>View Campaign: {{ campaign.campaign_name }}</h1>
+    <p><strong>Greeting:</strong> {{ campaign.greeting }}</p>
+    <p><strong>Prompt:</strong> {{ campaign.prompt }}</p>
+    <p><strong>Call Numbers:</strong> {{ campaign.call_numbers }}</p>
+    <p><strong>Routing Group:</strong> {{ campaign.routing_group }}</p>
+    <p><strong>Created At:</strong> {{ campaign.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+
+    <h2>Scheduled Calls</h2>
+    <ul>
+        {% for call in scheduled_calls %}
+            <li>
+                {{ call.date_from.strftime('%Y-%m-%d') }} {{ call.time_from.strftime('%H:%M') }} to 
+                {{ call.date_to.strftime('%Y-%m-%d') }} {{ call.time_to.strftime('%H:%M') }} - 
+                Status: {{ call.status }}
+            </li>
+        {% else %}
+            <li>No scheduled calls for this campaign.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Knowledge Base Entries</h2>
+    <ul>
+        {% for kb in knowledge_bases %}
+            <li>{{ kb.faq_entries }}</li>
+        {% else %}
+            <li>No knowledge base entries for this campaign.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Agents</h2>
+    <ul>
+        {% for agent in agents %}
+            <li>{{ agent.agent_name }} - Role: {{ agent.role }}</li>
+        {% else %}
+            <li>No agents associated with this campaign.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('campaigns.manage_campaigns') }}">Back to Manage Campaigns</a>
+</body>
+</html>
